@@ -2,6 +2,12 @@
 
 This configuration allows access to a container and to the host.
 
+Testing this monster:
+
+```bash
+docker-compose up nginx-proxy wetty-ssh
+```
+
 ## WETTY - Web TTY
 
 Wetty is a terminal over HTTP and HTTPS. It's built with Node.JS, and it runs
