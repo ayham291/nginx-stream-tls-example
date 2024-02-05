@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  proxy-it:
+    image: nginx:latest
+    container_name: proxy-it
+    hostname: proxy-it
+    networks:
+      proxies:
+    restart: always
+    ports:
+      - 192.168.0.110:80:80
+      - 192.168.0.110:443:443
+    volumes:
+      - ./nginx_it.conf:/etc/nginx/nginx.conf
+      - ./certs:/etc/nginx/ssl/
+      - ./ca/:/etc/nginx/ssl/ca/
+  proxy-ot:
+    image: nginx:latest
+    container_name: proxy-ot
+    hostname: proxy-ot
+    networks:
+      proxies:
+    restart: always
+    ports:
+      - 192.168.0.109:80:80
+      - 192.168.0.109:443:443
+    volumes:
+      - ./nginx_ot.conf:/etc/nginx/nginx.conf
+      - ./certs:/etc/nginx/ssl/
+      - ./ca/:/etc/nginx/ssl/ca/
+
+  # Network monitoring
+  sankey-scapy:
+    build: https://github.com/ayham291/sankey-packet-demo.git
+    network_mode: "host"
+    container_name: sankey
+
+networks:
+  proxies:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
